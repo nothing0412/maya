@@ -1,0 +1,365 @@
+Problem Statement
+
+Implement Min, Max, Sum, and Average operations using Parallel Reduction in C++ using OpenMP.
+
+This program uses parallel programming to calculate:
+
+Sum of all elements
+Minimum element
+Maximum element
+Average of elements
+
+using multiple threads together.
+Deep Explanation of the Problem
+
+Normally, when we calculate sum/min/max:
+
+One CPU core works
+Elements are processed one by one
+
+This is called Sequential Processing.
+
+But in Parallel Reduction:
+
+Multiple threads work simultaneously
+Array is divided among threads
+Each thread calculates partial results
+OpenMP combines results automatically
+
+This makes execution faster for large data.
+Header Files
+#include <iostream>
+
+Used for:
+
+cin
+cout
+
+for input/output operations.
+
+#include <omp.h>
+
+This includes OpenMP library.
+
+OpenMP provides:
+
+Parallel programming support
+Threads
+Reduction operations
+
+Without this header, OpenMP functions/directives won’t work.
+
+Namespace
+using namespace std;
+
+Allows writing:
+
+cout
+cin
+
+instead of:
+
+std::cout
+std::cin
+Main Function
+int main()
+
+Program execution starts from main().
+
+Taking Number of Elements
+int n;
+cout << "Enter number of elements: ";
+cin >> n;
+
+User enters size of array.
+
+Example:
+
+5
+
+means array has 5 elements.
+
+Array Declaration
+int arr[100];
+
+Creates array of size 100.
+
+Why fixed size?
+
+Simpler for beginners
+No dynamic memory needed
+
+Limitation:
+
+Cannot store more than 100 elements
+Input Array Elements
+cout << "Enter elements:\n";
+for(int i = 0; i < n; i++) {
+    cin >> arr[i];
+}
+
+Loop stores elements into array.
+
+Example input:
+
+1 2 3 4 5
+
+Stored as:
+
+arr[0]=1
+arr[1]=2
+arr[2]=3
+arr[3]=4
+arr[4]=5
+Initialize Variables
+int sum = 0, min = arr[0], max = arr[0];
+sum
+
+Starts from 0 because addition starts from 0.
+
+min
+
+Initialized with first element.
+
+Why?
+Because first element is assumed minimum initially.
+
+max
+
+Also initialized with first element.
+
+Most Important Part → Parallel Reduction
+#pragma omp parallel for reduction(+:sum) reduction(min:min) reduction(max:max)
+
+This is OpenMP directive.
+
+It tells compiler:
+
+"Run this loop in parallel using multiple threads."
+
+Understanding Reduction
+
+Reduction combines results from multiple threads safely.
+
+Without reduction:
+
+Threads may overwrite shared variables
+Wrong output occurs
+Called Race Condition
+
+Reduction avoids this.
+
+Sum Reduction
+reduction(+:sum)
+
+Meaning:
+
+Each thread creates private copy of sum
+Performs addition locally
+Final sums are combined using +
+
+Example:
+
+Thread 1:
+
+sum = 10
+
+Thread 2:
+
+sum = 20
+
+Final:
+
+30
+Minimum Reduction
+reduction(min:min)
+
+Each thread finds local minimum.
+
+OpenMP combines all local minimums.
+
+Maximum Reduction
+reduction(max:max)
+
+Each thread finds local maximum.
+
+OpenMP combines them.
+
+Parallel Loop
+for(int i = 0; i < n; i++)
+
+Iterations are divided among threads.
+
+Example:
+If 8 elements and 4 threads:
+
+Thread	Elements
+T1	0,1
+T2	2,3
+T3	4,5
+T4	6,7
+
+All work simultaneously.
+
+Sum Calculation
+sum += arr[i];
+
+Adds each element to total sum.
+
+Example:
+
+1+2+3+4+5 = 15
+Minimum Logic
+if(arr[i] < min)
+    min = arr[i];
+
+Checks:
+
+Is current element smaller?
+
+If yes:
+
+Update minimum
+
+Example:
+
+5 2 9 1 7
+
+Minimum becomes:
+
+1
+Maximum Logic
+if(arr[i] > max)
+    max = arr[i];
+
+Checks:
+
+Is current element larger?
+
+If yes:
+
+Update maximum
+
+Example:
+
+5 2 9 1 7
+
+Maximum becomes:
+
+9
+Printing Results
+cout << "\nSum = " << sum;
+
+Displays total sum.
+
+cout << "\nMin = " << min;
+
+Displays smallest element.
+
+cout << "\nMax = " << max;
+
+Displays largest element.
+
+Average Calculation
+cout << "\nAverage = " << (float)sum/n;
+
+Formula:
+
+Average=
+n
+Sum
+	​
+
+
+(float) is used for decimal result.
+
+Without float:
+
+15/2 = 7
+
+With float:
+
+15/2 = 7.5
+return 0
+return 0;
+
+Means:
+
+Program executed successfully.
+
+Example Execution
+Input
+Enter number of elements: 5
+Enter elements:
+1 2 3 4 5
+Internal Working
+Sum
+1+2+3+4+5 = 15
+Minimum
+1
+Maximum
+5
+Average
+
+5
+15
+	​
+
+=3
+
+Output
+Sum = 15
+Min = 1
+Max = 5
+Average = 3
+How Parallel Execution Happens
+
+Suppose:
+
+Array = [1,2,3,4,5,6,7,8]
+
+4 threads work:
+
+Thread	Elements	Partial Sum
+T1	1,2	3
+T2	3,4	7
+T3	5,6	11
+T4	7,8	15
+
+Final:
+
+3+7+11+15 = 36
+
+This is called Parallel Reduction.
+
+Time Complexity
+Operation	Complexity
+Sum	O(n)
+Min	O(n)
+Max	O(n)
+Average	O(1)
+
+Parallel execution reduces actual execution time.
+
+Advantages of Parallel Reduction
+Advantage	Explanation
+Faster Execution	Multiple threads work together
+Efficient CPU Usage	Uses multicore processors
+Automatic Combination	OpenMP handles merging
+Easy Syntax	Simple pragma directive
+Limitations
+Limitation	Explanation
+Small arrays may not benefit	Thread creation overhead
+Fixed array size	Only 100 elements
+Requires OpenMP support	Compiler must support OpenMP
+Compilation Command
+
+For GCC:
+
+g++ filename.cpp -fopenmp
+
+Run:
+
+./a.out
+ << >> why this us
+now what if i want this to not take fixed size arry and take input by it self

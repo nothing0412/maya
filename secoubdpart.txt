@@ -1,0 +1,103 @@
+Old Fixed Array
+int arr[100];
+Problem:
+
+
+Size fixed to 100
+
+
+Cannot store more than 100 elements
+
+
+Wastes memory if user enters small size
+
+
+
+New Dynamic Vector
+vector<int> arr(n);
+Meaning:
+
+
+Create vector of size n
+
+
+Size decided at runtime
+
+
+Memory allocated dynamically
+
+
+If user enters:
+5
+then vector size becomes 5.
+If user enters:
+1000
+then vector size becomes 1000.
+
+Why Vector is Better?
+Fixed ArrayVectorFixed sizeDynamic sizeLess flexibleFlexibleOld styleModern C++Risk of overflowSafer
+
+Important Header
+#include <vector>
+Needed for using vector.
+
+How Vector Works
+vector<int> arr(n);
+Breakdown:
+PartMeaningvectorSTL containerintdatatypearrvector name(n)size
+
+Accessing Vector Elements
+Same as array:
+arr[i]
+So your logic remains unchanged.
+
+Example
+Input
+Enter number of elements: 5Enter elements:10 20 30 40 50
+
+Calculations
+Sum
+10+20+30+40+50=15010+20+30+40+50=15010+20+30+40+50=150
+Average
+1505=30\frac{150}{5}=305150​=30
+
+Output
+Sum = 150Min = 10Max = 50Average = 30
+
+Viva Questions They Can Ask
+Q1. Why use vector instead of array?
+Because vector supports dynamic memory allocation and flexible size.
+
+Q2. Which header file is needed for vector?
+#include <vector>
+
+Q3. Is vector part of STL?
+Yes.
+STL = Standard Template Library.
+
+Q4. Difference between array and vector?
+ArrayVectorFixed sizeDynamic sizeFaster slightlyMore flexibleManual memoryAutomatic management
+
+Another Method → Dynamic Array using new
+You can also do:
+int *arr = new int[n];
+But vector is preferred because:
+
+
+Safer
+
+
+Easier
+
+
+Automatic memory management
+
+
+
+Important Interview Point
+Your OpenMP logic:
+#pragma omp parallel for reduction(...)
+works exactly same with vector because:
+arr[i]
+still accesses elements normally.
+So only storage changes, not parallel reduction logic.
